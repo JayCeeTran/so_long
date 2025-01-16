@@ -53,6 +53,11 @@ SRCS = map_size.c \
 	map_walls.c \
 	fill_map.c \
 	valid_path.c \
+	start_game.c \
+	load_image.c \
+	drawmap.c \
+	keyhook.c \
+	moving_keys.c \
 
 OBJ = $(SRCS:.c=.o)
 LOBJ = $(LSRCS:.c=.o)

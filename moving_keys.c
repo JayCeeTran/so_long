@@ -1,6 +1,6 @@
 #include "so_long.h"
 
-int	w_valid_move(gamedata *game, int pi)
+int	w_valid_move(t_game *game, int pi)
 {
 	int	i;
 	int	j;
@@ -9,6 +9,8 @@ int	w_valid_move(gamedata *game, int pi)
 	j = game->player.pj;
 	if (!game->map[pi][j].wall)
 	{
+		if(game->map[pi][j].collectible == 1)
+			game->collectibles--;
 		game->map[i][j].player = 0;
 		game->map[i][j].empty = 1;
 		game->player.pi = pi;
@@ -19,12 +21,12 @@ int	w_valid_move(gamedata *game, int pi)
 	drawmap(game);
 	if (!game->collectibles)
 	{
-		if (game->map[pi][j].exit == 1)
-			endgame(game);
+		if (j == game->exit.ej && pi == game->exit.ei)
+			close_game(game);
 	}
 }
 
-int	s_valid_move(gamedata *game, int pi)
+int	s_valid_move(t_game *game, int pi)
 {
 	int	i;
 	int	j;
@@ -33,6 +35,8 @@ int	s_valid_move(gamedata *game, int pi)
 	j = game->player.pj;
 	if (!game->map[pi][j].wall)
 	{
+		if(game->map[pi][j].collectible == 1)
+			game->collectibles--;
 		game->map[i][j].player = 0;
 		game->map[i][j].empty = 1;
 		game->player.pi = pi;
@@ -43,12 +47,12 @@ int	s_valid_move(gamedata *game, int pi)
 	drawmap(game);
 	if (!game->collectibles)
 	{
-		if (game->map[pi][j].exit == 1)
-			endgame(game);
+		if (j == game->exit.ej && pi == game->exit.ei)
+			close_game(game);
 	}
 }
 
-int	a_valid_move(gamedata *game, int pj)
+int	a_valid_move(t_game *game, int pj)
 {
 	int	i;
 	int	j;
@@ -57,6 +61,8 @@ int	a_valid_move(gamedata *game, int pj)
 	j = game->player.pj;
 	if (!game->map[i][pj].wall)
 	{
+		if(game->map[i][pj].collectible == 1)
+			game->collectibles--;
 		game->map[i][j].player = 0;
 		game->map[i][j].empty = 1;
 		game->player.pj = pj;
@@ -68,12 +74,12 @@ int	a_valid_move(gamedata *game, int pj)
 	if (!game->collectibles)
 	{
 		if (game->map[i][pj].exit == 1)
-			endgame(game);
+			close_game(game);
 	}
 	return (0);
 }
 
-int	d_valid_move(gamedata *game, int pj)
+int	d_valid_move(t_game *game, int pj)
 {
 	int	i;
 	int	j;
@@ -82,6 +88,8 @@ int	d_valid_move(gamedata *game, int pj)
 	j = game->player.pj;
 	if (!game->map[i][pj].wall)
 	{
+		if(game->map[i][pj].collectible == 1)
+			game->collectibles--;
 		game->map[i][j].player = 0;
 		game->map[i][j].empty = 1;
 		game->player.pj = pj;
@@ -93,22 +101,22 @@ int	d_valid_move(gamedata *game, int pj)
 	if (!game->collectibles)
 	{
 		if (game->map[i][pj].exit == 1)
-			endgame(game);
+			close_game(game);
 	}
 	return (0);
 }
 
-void	moving_keys(gamedata *game, int keycode)
+void	moving_keys(t_game *game, mlx_key_data_t keycode)
 {
-	if(keycode == 119)
-	{
+	//printf("%d collect\n", game->collectibles);
+	//printf("%d %d exit\n", game->exit.ei, game->exit.ej);
+	if(keycode.key == 87)
 		w_valid_move(game, game->player.pi - 1);
-	}
-	else if (keycode == 97)
+	else if (keycode.key == 65)
 		a_valid_move(game, game->player.pj - 1);
-	else if (keycode == 115)
+	else if (keycode.key == 83)
 		s_valid_move(game, game->player.pi + 1);
-	else if (keycode == 100)
+	else if (keycode.key == 68)
 		d_valid_move(game, game->player.pj + 1);
 	
 }

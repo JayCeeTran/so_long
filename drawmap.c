@@ -1,33 +1,25 @@
 #include "so_long.h"
 
-void    check_struct(maps map, gamedata *game, int i, int j)
+void    check_struct(t_map map, t_game *game, int i, int j)
 {
     if (map.wall)
-        mlx_put_image_to_window(game->mlx, game->win, game->img_wall, j * game->tilesize, i * game->tilesize);
+        mlx_image_to_window(game->mlx, game->images.wall, j * game->tilesize, i * game->tilesize);
     else if(map.player)
-    {
-        game->player.pi = i;
-        game->player.pj = j;
-        mlx_put_image_to_window(game->mlx, game->win, game->img_player, j * game->tilesize, i * game->tilesize);
-    }
+        mlx_image_to_window(game->mlx, game->images.player, j * game->tilesize, i * game->tilesize);
     else if(map.exit)
-        mlx_put_image_to_window(game->mlx, game->win, game->img_exit, j * game->tilesize, i * game->tilesize);
+        mlx_image_to_window(game->mlx, game->images.exit, j * game->tilesize, i * game->tilesize);
     else if(map.empty)
-        mlx_put_image_to_window(game->mlx, game->win, game->img_empty, j * game->tilesize, i * game->tilesize);
+        mlx_image_to_window(game->mlx, game->images.empty, j * game->tilesize, i * game->tilesize);
     else if(map.collectible)
-    {
-        game->collectibles++;
-        mlx_put_image_to_window(game->mlx, game->win, game->img_collectible, j * game->tilesize, i * game->tilesize);
-    }
+        mlx_image_to_window(game->mlx, game->images.collectible, j * game->tilesize, i * game->tilesize);
 }
 
-void    drawmap(gamedata *game)
+void    drawmap(t_game *game)
 {
     int i = 0;
     int j = 0;
 
-    game->collectibles = 0;
-    while(i < game->rows)
+	while(i < game->rows)
     {
         j = 0;
         while(j < game->cols)
@@ -37,10 +29,10 @@ void    drawmap(gamedata *game)
         }
         i++;
     }
-    mlx_key_hook(game->win, keyhook, game);
+    //mlx_key_hook(game->win, keyhook, game);
 }
 
-void    opengame(gamedata *game)
+/*void    opengame(gamedata *game)
 {
     int i = 0;
     int j = 0;
@@ -59,4 +51,4 @@ void    opengame(gamedata *game)
     }
     mlx_key_hook(game->win, keyhook, game);
 	mlx_hook(game->win, 17, 0, close_window, game);
-}
+}*/

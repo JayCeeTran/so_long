@@ -1,41 +1,46 @@
 #include "so_long.h"
 
-int close_window(gamedata *game)
+void close_window(t_game *game)
 {
-	mlx_destroy_window(game->mlx, game->win);
+	mlx_close_window(game->mlx);
+	freemap(game);
+	delete_images(game);
 	exit (0);
-	return (0);
 }   
 
-int	space_to_start(int keycode, void *param)
+/*int	space_to_start(int keycode, void *param)
 {
-	gamedata *game;
+	t_game *game;
 
 	game = (gamedata *)param;
-	if (keycode == 32)
-		opengame(game);
+	//if (keycode == 32)
+	//	opengame(game);
 	else if (keycode == 65307)
 	{
 		close_window(game);
 		return (0);
 	}
-	else
-		mlx_key_hook(game->win, space_to_start, game);
+
 	return (0);
+}*/
+void	close_game(t_game *game)
+{
+		freemap(game);
+		delete_images(game);
+		mlx_close_window(game->mlx);
+		mlx_terminate(game->mlx);
+		exit (0);
 }
 
-int	keyhook(int keycode, void *param)
+void	keyhook(mlx_key_data_t keycode, void *param)
 {
-	gamedata *game;
+	t_game *game;
 	
-	game = (gamedata *)param;
-	printf("%d keypressed\n", keycode);
-	if (keycode == 65307)
-	{
-		close_window(game);
-		return (0);
-	}
-	if (keycode == 119 || keycode == 97 || keycode == 115 || keycode == 100)
+	game = (t_game *)param;
+	//printf("%d keypressed\n", keycode);
+	if (keycode.key == 256 && keycode.action == MLX_PRESS)
+		close_game(game);
+	if ((keycode.key == 87 || keycode.key == 65 || keycode.key == 83 || keycode.key == 68) && keycode.action == MLX_PRESS)
 		moving_keys(game, keycode);
 
 }

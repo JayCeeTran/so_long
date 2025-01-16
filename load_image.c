@@ -1,17 +1,62 @@
 #include "so_long.h"
 
-int	load_image(gamedata *game)
+void	delete_texture(t_texture *texture)
 {
-	game->img_wall = mlx_xpm_file_to_image(game->mlx, "textures/wall.xpm", &game->win_width, &game->win_height);
-	game->img_empty = mlx_xpm_file_to_image(game->mlx, "textures/empty.xpm", &game->win_width, &game->win_height);
-	game->img_collectible = mlx_xpm_file_to_image(game->mlx, "textures/poop.xpm", &game->win_width, &game->win_height);
-	game->img_exit = mlx_xpm_file_to_image(game->mlx, "textures/exit.xpm", &game->win_width, &game->win_height);
-	game->img_player = mlx_xpm_file_to_image(game->mlx, "textures/player.xpm", &game->win_width, &game->win_height);
-	if(!game->img_wall || !game->img_empty || !game->img_collectible || !game->img_exit || !game->img_player)
+	mlx_delete_texture(texture->start);
+	mlx_delete_texture(texture->wall);
+	mlx_delete_texture(texture->empty);
+	mlx_delete_texture(texture->collectible);
+	mlx_delete_texture(texture->exit);
+	mlx_delete_texture(texture->player);
+}
+
+void	delete_images(t_game *game)
+{
+	mlx_delete_image(game->mlx, game->images.start);
+	mlx_delete_image(game->mlx, game->images.wall);
+	mlx_delete_image(game->mlx, game->images.empty);
+	mlx_delete_image(game->mlx, game->images.exit);
+	mlx_delete_image(game->mlx, game->images.collectible);
+	mlx_delete_image(game->mlx, game->images.player);
+}
+
+void	load_image(t_game *game, t_texture *texture)
+{
+	game->images.start = mlx_texture_to_image(game->mlx, texture->start);
+	game->images.wall = mlx_texture_to_image(game->mlx, texture->wall);
+	game->images.empty = mlx_texture_to_image(game->mlx, texture->empty);
+	game->images.exit = mlx_texture_to_image(game->mlx, texture->exit); 
+	game->images.collectible = mlx_texture_to_image(game->mlx, texture->collectible);
+	game->images.player = mlx_texture_to_image(game->mlx, texture->player); 
+	if(!game->images.wall || !game->images.empty || !game->images.collectible || !game->images.exit || !game->images.player || !game->images.start)
 	{
+		delete_images(game);
+		delete_texture(texture);
+		freemap(game);
 		printf("Error loading images\n");
-		return (0);
+		exit (1);
 	}
-	game->tilesize = game->win_width;
-	return (1);
+}
+
+void	load_texture_image(t_game *game)
+{
+	t_texture textures;
+
+	textures.start = mlx_load_png("textures/start.png");
+	textures.wall = mlx_load_png("textures/tree.png");
+	textures.empty = mlx_load_png("textures/empty.png");
+	textures.collectible = mlx_load_png("textures/Taide.png");
+	textures.exit = mlx_load_png("textures/Ditto.png");
+	textures.player = mlx_load_png("textures/Player.png");
+	if(!textures.wall || !textures.empty || !textures.collectible || !textures.exit || !textures.player || !textures.start)
+	{
+		delete_texture(&textures);
+		freemap(game);
+		printf("Error: failed to create textures!\n");
+		exit (1);
+	}
+	load_image(game, &textures);
+	delete_texture(&textures);
+	game->tilesize = game->images.wall->width;
+	printf("tilesize: %d\n", game->tilesize);
 }

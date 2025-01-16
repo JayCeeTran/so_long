@@ -78,13 +78,14 @@ int	main(int argc, char **argv)
 		printf("\n");
 		x++;
 	}
-	/*if (!start_game(&game))
+	if (!start_game(&game))
 	{
 		printf("starting game failed");
 		return (0);
-	}*/
+	}
+	//mlx_key_hook(game.win, keyhook, &game);
 	//mlx_hook(game.win, 22, 0, resize_window, &game);
-	//mlx_loop(game.mlx);
+	mlx_loop(game.mlx);
 	printf("all good here\n");
 	freemap(&game);
 	return(0);
