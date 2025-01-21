@@ -2,7 +2,6 @@
 
 void	delete_texture(t_texture *texture)
 {
-	mlx_delete_texture(texture->start);
 	mlx_delete_texture(texture->wall);
 	mlx_delete_texture(texture->empty);
 	mlx_delete_texture(texture->collectible);
@@ -12,7 +11,6 @@ void	delete_texture(t_texture *texture)
 
 void	delete_images(t_game *game)
 {
-	mlx_delete_image(game->mlx, game->images.start);
 	mlx_delete_image(game->mlx, game->images.wall);
 	mlx_delete_image(game->mlx, game->images.empty);
 	mlx_delete_image(game->mlx, game->images.exit);
@@ -22,13 +20,12 @@ void	delete_images(t_game *game)
 
 void	load_image(t_game *game, t_texture *texture)
 {
-	game->images.start = mlx_texture_to_image(game->mlx, texture->start);
 	game->images.wall = mlx_texture_to_image(game->mlx, texture->wall);
 	game->images.empty = mlx_texture_to_image(game->mlx, texture->empty);
 	game->images.exit = mlx_texture_to_image(game->mlx, texture->exit); 
 	game->images.collectible = mlx_texture_to_image(game->mlx, texture->collectible);
 	game->images.player = mlx_texture_to_image(game->mlx, texture->player); 
-	if(!game->images.wall || !game->images.empty || !game->images.collectible || !game->images.exit || !game->images.player || !game->images.start)
+	if(!game->images.wall || !game->images.empty || !game->images.collectible || !game->images.exit || !game->images.player)
 	{
 		delete_images(game);
 		delete_texture(texture);
@@ -42,13 +39,12 @@ void	load_texture_image(t_game *game)
 {
 	t_texture textures;
 
-	textures.start = mlx_load_png("textures/start.png");
 	textures.wall = mlx_load_png("textures/tree.png");
 	textures.empty = mlx_load_png("textures/empty.png");
 	textures.collectible = mlx_load_png("textures/Taide.png");
 	textures.exit = mlx_load_png("textures/Ditto.png");
 	textures.player = mlx_load_png("textures/Player.png");
-	if(!textures.wall || !textures.empty || !textures.collectible || !textures.exit || !textures.player || !textures.start)
+	if(!textures.wall || !textures.empty || !textures.collectible || !textures.exit || !textures.player)
 	{
 		delete_texture(&textures);
 		freemap(game);
@@ -58,5 +54,4 @@ void	load_texture_image(t_game *game)
 	load_image(game, &textures);
 	delete_texture(&textures);
 	game->tilesize = game->images.wall->width;
-	printf("tilesize: %d\n", game->tilesize);
 }

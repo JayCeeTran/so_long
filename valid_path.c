@@ -25,7 +25,6 @@ int	valid_path(t_game *game)
 	y = game->player.pj;
 	collectible = game->collectibles;
 	valid_path_helper(game, x, y, &collectible);
-	printf("collectible:%d	exit.visited:%d\n", collectible, game->exit.visited);
 	if(collectible == 0 && game->exit.visited == 1)
 		return (1);
 	return(0);

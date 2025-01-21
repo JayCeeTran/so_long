@@ -36,6 +36,13 @@ t_map **mallocmap(int rows, int col, char *argv, t_game *game)
 	return(map);
 }
 
+void	invalid_argument(void)
+{
+	errno = EINVAL;
+	perror("Error");
+	exit(EXIT_FAILURE);
+}
+
 int	main(int argc, char **argv)
 {
 	t_game game;
@@ -43,10 +50,7 @@ int	main(int argc, char **argv)
 	if (argc < 2)
 		return (0);
 	if(!validate_argument(argv[1]))
-	{
-		printf("Error invalid argument\n");
-		return(0);
-	}
+		invalid_argument();
 	game.cols = is_map_size_valid(&game.rows, &game.cols, argv[1]);
 	if (game.cols == -1 || !map_chars(argv[1]) || !map_walls(argv[1], game.rows, game.cols))
 	{
@@ -83,8 +87,6 @@ int	main(int argc, char **argv)
 		printf("starting game failed");
 		return (0);
 	}
-	//mlx_key_hook(game.win, keyhook, &game);
-	//mlx_hook(game.win, 22, 0, resize_window, &game);
 	mlx_loop(game.mlx);
 	printf("all good here\n");
 	freemap(&game);

@@ -56,8 +56,11 @@ SRCS = map_size.c \
 	start_game.c \
 	load_image.c \
 	drawmap.c \
+	drawmap_big.c \
 	keyhook.c \
 	moving_keys.c \
+	helper_for_moving.c \
+	shortest_path.c \
 
 OBJ = $(SRCS:.c=.o)
 LOBJ = $(LSRCS:.c=.o)

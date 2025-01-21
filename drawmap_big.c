@@ -1,7 +1,8 @@
 #include "so_long.h"
 
-void    check_struct(t_map map, t_game *game, int i, int j)
+void    check_struct_big(t_map map, t_game *game, int i, int j)
 {
+
     if (map.wall)
         mlx_image_to_window(game->mlx, game->images.wall, j * game->tilesize, i * game->tilesize);
     else if(map.player)
@@ -14,19 +15,31 @@ void    check_struct(t_map map, t_game *game, int i, int j)
         mlx_image_to_window(game->mlx, game->images.collectible, j * game->tilesize, i * game->tilesize);
 }
 
-void    drawmap(t_game *game)
+void    drawmap_big(t_game *game)
 {
-    int i = 0;
-    int j = 0;
+    int i;
+    int j;
+	int x;
+	int y;
 
-	while(i < game->rows)
+	i = 0;
+	x = 0;
+	if(game->player.pi > 5)
+		i = game->player.pi - 5;
+	while(x < 11)
     {
         j = 0;
-        while(j < game->cols)
+		y = 0;
+		if(game->player.pj > 7)
+			j = game->player.pj - 7;
+        while(y < 15)
         {
-            check_struct(game->map[i][j], game, i, j);
-            j++;
+			if(i < game->rows && j < game->cols)
+				check_struct_big(game->map[i][j++], game, x, y++);
+			else
+				mlx_image_to_window(game->mlx, game->images.wall, y++ * game->tilesize, x * game->tilesize);
         }
         i++;
-    }
+		x++;
+    }    
 }
