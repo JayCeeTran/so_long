@@ -49,8 +49,6 @@ LSRCS =	libft/ft_atoi.c \
 	libft/ft_lstsize_bonus.c \
 
 SRCS = map_size.c \
-	map_chars.c \
-	map_walls.c \
 	fill_map.c \
 	valid_path.c \
 	start_game.c \
@@ -61,15 +59,18 @@ SRCS = map_size.c \
 	moving_keys.c \
 	helper_for_moving.c \
 	shortest_path.c \
-
+	map_chars_walls.c \
+	error_msgs.c \
+	
 OBJ = $(SRCS:.c=.o)
 LOBJ = $(LSRCS:.c=.o)
+FPRINT = -Lftprintf -lftprintf
 LIBMLX = -L ~/42/MLX42/build -lmlx42 -ldl -lglfw -lm -pthread
-EXE = a.out
+EXE = so_long
 
-all: $(NAME)
+all: $(EXE)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) 
 	ar -rcs $(NAME) $(OBJ) 
 
 $(LIBFT): $(LOBJ)
@@ -77,15 +78,17 @@ $(LIBFT): $(LOBJ)
 
 
 run: $(EXE)
-	./a.out maps/map1.ber
+	./so_long maps/map3.ber
 
 $(EXE): $(NAME) $(LIBFT) so_long.c
-	cc $(CFLAGS) -g so_long.c $(NAME) $(LIBFT) $(LIBMLX) -o $(EXE)
+	make -C ftprintf
+	cc $(CFLAGS) -g so_long.c $(NAME) $(FPRINT) $(LIBFT) $(LIBMLX) -o $(EXE)
 
 clean:
 	rm -f $(LOBJ) $(OBJ)
 
 fclean: clean
+	make -C ftprintf fclean
 	rm -f $(NAME) $(LIBFT) $(EXE)
 
 re: fclean all

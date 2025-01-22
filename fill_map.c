@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fill_map.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jtran <jtran@student.hive.fi>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/22 10:39:45 by jtran             #+#    #+#             */
+/*   Updated: 2025/01/22 10:39:58 by jtran            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
 
-static void	check_c(t_map *map, char c, t_game *game) //Fill structs with 1 or 0.
+void	check_c(t_map *map, char c, t_game *game)
 {
 	if (c == 'C')
 	{
@@ -8,7 +20,7 @@ static void	check_c(t_map *map, char c, t_game *game) //Fill structs with 1 or 0
 		map->collectible = 1;
 	}
 	else if (c == 'E')
-	{	
+	{
 		game->exit.ei = game->win_height;
 		game->exit.ej = game->win_width;
 		map->exit = 1;
@@ -29,8 +41,8 @@ static void	check_c(t_map *map, char c, t_game *game) //Fill structs with 1 or 0
 
 int	fillmap(t_map **map, char *argv, t_game *game)
 {
-	int	fd;
-	char c;
+	int		fd;
+	char	c;
 
 	game->collectibles = 0;
 	game->win_height = 0;
@@ -48,6 +60,6 @@ int	fillmap(t_map **map, char *argv, t_game *game)
 			game->win_width = 0;
 		}
 	}
-	close (fd);
+	close(fd);
 	return (1);
 }
